@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asteroid Games</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/edicion.css"> <!-- Se enlaza el CSS separado -->
+</head>
+
+<body>
+    <div id="stars"></div>
+
+  <!-- Contenedor principal -->
+<div id="gameWrapper">
+    <h1 id="gameTitle">Asteroid 🪨 Game </h1>
+
+    <!-- Contenedor del juego (canvas + menú de inicio y ranking) -->
+    <div id="gameContainer">
+        <canvas id="gameCanvas"></canvas>
+
+        <!-- Menú de inicio -->
+        <div id="menu-container">
+            <div id="menu">
+                <p id="player">NOMBRE DE JUGADOR</p>
+                <input type="text" id="playerName" placeholder="Tu nombre">
+                <br><br>
+                <button id="startGame" onclick="startGame()">Comenzar</button>
+            </div>
+
+            <div id="scoreCard">
+                <h2 id="lol">Ranking 🚀</h2>
+                <div id="scoreListContainer"> <!-- 🔹 Contenedor con Scroll -->
+                    <ul id="scoreList"></ul>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Felicitaciones -->
+<div id="gameOverModal" class="modal">
+    <div class="modal-content">
+        <h2 id="gameOverMessage">¡Felicidades!</h2> <!-- Aquí se actualizará el mensaje -->
+        <button id="restartButton">OK</button>
+    </div>
+</div>
+
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+    import { getDatabase, ref, set, push, get } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "TU_API_KEY",
+        authDomain: "TU_AUTH_DOMAIN",
+        databaseURL: "https://game-interactive-ef4cb-default-rtdb.firebaseio.com/",
+        projectId: "TU_PROJECT_ID",
+        storageBucket: "TU_STORAGE_BUCKET",
+        messagingSenderId: "TU_SENDER_ID",
+        appId: "TU_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    function guardarJugador(nombre, puntuacion) {
+        const jugadoresRef = ref(db, "ranking/");
+        const nuevoJugadorRef = push(jugadoresRef);
+        set(nuevoJugadorRef, {
+            nombre: nombre,
+            puntuacion: puntuacion
+        }).then(() => {
+            console.log("Jugador guardado correctamente");
+        }).catch((error) => {
+            console.error("Error al guardar en Firebase: ", error);
+        });
+    }
+
+    function obtenerRanking() {
+        const rankingRef = ref(db, "ranking/");
+    
+        get(rankingRef).then((snapshot) => {
+            if (snapshot.exists()) {
+                let ranking = snapshot.val();
+                let lista = Object.values(ranking).sort((a, b) => b.puntuacion - a.puntuacion); // Ordenar de mayor a menor
+    
+                let tablaRanking = document.getElementById("scoreList");
+                tablaRanking.innerHTML = ""; // Limpiar la tabla antes de actualizar
+    
+                // 🔹 Mostrar todos los jugadores, pero con scroll activado si hay más de 4
+                lista.forEach((jugador) => {
+                    let li = document.createElement("li");
+                    li.textContent = `${jugador.nombre} - ${jugador.puntuacion} pts`;
+                    tablaRanking.appendChild(li);
+                });
+    
+                console.log("Ranking actualizado:", lista);
+            } else {
+                console.log("No hay datos en Firebase.");
+            }
+        }).catch((error) => {
+            console.error("Error al obtener ranking:", error);
+        });
+    }
+    
+    
+    // ✅ Hacer accesible la función en la consola
+    window.guardarJugador = guardarJugador;
+    window.obtenerRanking = obtenerRanking;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        obtenerRanking();
+    });
+</script>
+
+<script src="js/main.js"></script>
+</body>
+</html>

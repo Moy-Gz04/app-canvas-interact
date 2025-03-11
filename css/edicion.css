@@ -1,0 +1,592 @@
+/* Estilos generales */
+body {
+    background: radial-gradient(circle, #222, #000); /* Fondo oscuro tipo espacio */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: white;
+}
+
+/* Estilos del contador */
+#info {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Contenedor del juego con flexbox */
+#gameContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px; /* Espacio entre el canvas y el menú */
+    padding: 20px;
+}
+
+/* Estilos del canvas */
+#gameCanvas {
+    border: 3px solid white;
+    background: radial-gradient(circle, #222, #000);
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+}
+
+/* Contenedor principal */
+#gameWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Título del juego */
+#gameTitle {
+    font-size: 32px;
+    color: white;
+    text-align: center;
+    margin: 0;
+}
+
+/* Contenedor del juego */
+#gameContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* Contenedor del menú y ranking */
+#menu-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    height: 100%;
+}
+
+/* Menú de ingreso de nombre */
+#menu {
+    text-align: center;
+    background: #121212;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    min-width: 250px;
+}
+
+#nombre{
+    font-family: monospace;
+    font-size: 25px;
+    color: white;
+    text-align: center;
+    margin: 0;
+}
+
+#rank{
+    color: #000;
+
+}
+
+/* Tarjeta de ranking */
+#scoreCard {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    width: 300px;
+    height: 240px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.activescore{
+    background: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    width: 300px;
+    height: 280px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Estilos del campo de nombre */
+#playerName {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+}
+
+/* Botón de iniciar */
+#startGame {
+    background: linear-gradient(135deg, #00ff00, #008000);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 255, 0, 0.3);
+}
+
+#startGame:hover {
+    background: linear-gradient(135deg, #008000, #005500);
+    box-shadow: 0 4px 15px rgba(0, 255, 0, 0.6);
+}
+
+/* Ranking */
+#scoreList {
+    list-style: none;
+    padding: 0;
+}
+
+#scoreList li {
+    background: #f3f3f3;
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 5px;
+    font-size: 16px;
+}
+/* Contenedor principal */
+#gameWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Título del juego */
+#gameTitle {
+    font-family:Arial, Helvetica, sans-serif;
+    color: white;
+    text-align: center;
+    margin: 0;
+}
+
+/* Contenedor del juego */
+#gameContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* Contenedor del menú y ranking */
+#menu-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    height: 100%;
+}
+
+/* Menú de ingreso de nombre */
+#menu {
+    text-align: center;
+    background: rgba(0, 0, 0, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    min-width: 250px;
+}
+
+/* Tarjeta de ranking */
+#scoreCard {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    width: 250px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Estilos del campo de nombre */
+#playerName {
+    font-family:monospace;
+    background-color: #444d44;
+    color: aliceblue;
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1.5px solid #1f1f1f;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+}
+
+/* Botón de iniciar */
+#startGame {
+    background: linear-gradient(135deg, #485a48, #444d44);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 255, 0, 0.3);
+}
+
+#startGame:hover {
+    background: linear-gradient(135deg, #008000, #005500);
+    box-shadow: 0 4px 15px rgba(0, 255, 0, 0.6);
+}
+
+/* Ranking */
+#scoreList {
+    list-style: none;
+    padding: 4;
+    height: 160px;
+}
+
+#scoreList li {
+    background: #1b1a1a;
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+
+
+.modal {
+    display: none; /* 🔹 Oculto al inicio */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(10, 10, 10, 0.7);
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+}
+
+.modal-content {
+    background: linear-gradient(145deg, #ffffff, #e6e6e6);
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+    width: 320px;
+    transform: scale(0.8);
+    transition: transform 0.3s ease-in-out;
+}
+
+.modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content.show {
+    transform: scale(1);
+}
+
+#restartButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    background: green;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+#restartButton:hover {
+    background: darkgreen;
+}
+
+#gameOverMessage {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+    display: block;
+    text-align: center;
+    margin-bottom: 15px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#restartButton {
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight: bold;
+    background: linear-gradient(145deg, #ff4d4d, #d40000);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-top: 10px;
+    box-shadow: 0px 4px 10px rgba(255, 0, 0, 0.4);
+    transition: all 0.3s ease-in-out;
+}
+
+/* 🟡 EFECTO HOVER BOTÓN 🟡 */
+#restartButton:hover {
+    background: linear-gradient(145deg, #d40000, #a60000);
+    transform: scale(1.05);
+}
+
+/* 🔄 EFECTO CLICK BOTÓN 🔄 */
+#restartButton:active {
+    transform: scale(0.95);
+}
+/* 🔥 Estilo de la Card del Ranking */
+#scoreCard {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    width: 270px;
+    height: 250px; /* 🔹 Tamaño total fijo */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+}
+
+/* 🔹 Mantener el título fijo */
+#scoreCard h2 {
+    margin: 0;
+    padding: 10px 0;
+    font-size: 20px;
+    font-weight: bold;
+    background: linear-gradient(145deg, #ffffff, #d9d9d9);
+    border-radius: 8px 8px 0 0;
+    position: relative;
+}
+
+/* 🎖️ Contenedor de la lista con scroll */
+#scoreListContainer {
+    flex: 1; /* 🔹 Ocupar el espacio restante */
+    overflow-y: auto; /* 🔹 Hacer scroll solo aquí */
+    padding: 5px;
+}
+
+/* 🎖️ Estilo para la Lista de Jugadores */
+#scoreList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* 🔹 Estilo de cada Elemento del Ranking */
+#scoreList li {
+    background: #222;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* 🔽 Scroll Personalizado */
+#scoreListContainer::-webkit-scrollbar {
+    width: 8px;
+}
+
+#scoreListContainer::-webkit-scrollbar-track {
+    background: #ddd;
+    border-radius: 10px;
+}
+
+#scoreListContainer::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+#scoreListContainer::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+#lol{
+    color: #1b1a1a;
+    font-size: 15px;
+}
+
+#gameCanvas {
+    background: url('./img/12.jpg') no-repeat center center; 
+    background-size: cover;
+    border: 3px solid white;
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+}
+
+body {
+    background-color: #121212; /* Color de fondo oscuro */
+    background-image: url('./img/3.jpg'); /* Ruta de la imagen */
+    background-size: contain; /* Ajusta la imagen sin recortarla */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+}
+
+/* Fondo del body con estrellas animadas */
+body {
+    background-color: black;
+    overflow: hidden;
+}
+
+/* Contenedor de estrellas */
+#stars {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+/* Estrellas */
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background-color: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: twinkle 2s infinite alternate;
+}
+
+/* Animación de parpadeo */
+@keyframes twinkle {
+    from { opacity: 0.3; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1.2); }
+}
+
+/* Estilo base del título */
+#gameTitle {
+    font-size: 55px;
+    font-weight: 900; /* Más grueso */
+    text-transform: uppercase;
+    text-align: center;
+    color: white; /* Letras siempre blancas */
+    letter-spacing: 3px;
+    text-shadow: 0 0 10px #fff; /* Sombra base para más brillo */
+    animation: neonGlow 2s infinite alternate; /* Animación del brillo */
+}
+
+/* 🔥 Efecto de resplandor de colores en la sombra */
+@keyframes neonGlow {
+    0% { text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000; }
+    25% { text-shadow: 0 0 10px #ff8000, 0 0 20px #ff8000, 0 0 30px #ff8000; }
+    50% { text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00; }
+    75% { text-shadow: 0 0 10px #0080ff, 0 0 20px #0080ff, 0 0 30px #0080ff; }
+    100% { text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff; }
+}
+
+/* 🎮 Estilo base del botón */
+#startGame {
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: white; /* Letras siempre blancas */
+    background: transparent; /* Fondo transparente */
+    border: 3px solid white; /* Borde inicial */
+    padding: 12px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+    animation: neonBorder 2s infinite alternate; /* Efecto neón animado */
+}
+
+/* 🟢 Efecto de brillo en los bordes */
+@keyframes neonBorder {
+    0% { box-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000; border-color: #ff0000; }
+    25% { box-shadow: 0 0 5px #ff8000, 0 0 10px #ff8000, 0 0 15px #ff8000; border-color: #ff8000; }
+    50% { box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00; border-color: #00ff00; }
+    75% { box-shadow: 0 0 5px #0080ff, 0 0 10px #0080ff, 0 0 15px #0080ff; border-color: #0080ff; }
+    100% { box-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff, 0 0 15px #ff00ff; border-color: #ff00ff; }
+}
+
+/* 🔥 Efecto cuando pasas el mouse */
+#startGame:hover {
+    transform: scale(1.1); /* Aumenta un poco el tamaño */
+    animation: neonBorderFast 0.5s infinite alternate; /* Efecto más rápido */
+}
+
+/* ⚡ Brillo más intenso al pasar el cursor */
+@keyframes neonBorderFast {
+    0% { box-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000; border-color: #ff0000; }
+    25% { box-shadow: 0 0 10px #ff8000, 0 0 20px #ff8000, 0 0 30px #ff8000; border-color: #ff8000; }
+    50% { box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00; border-color: #00ff00; }
+    75% { box-shadow: 0 0 10px #0080ff, 0 0 20px #0080ff, 0 0 30px #0080ff; border-color: #0080ff; }
+    100% { box-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff; border-color: #ff00ff; }
+}
+
+/* 🔥 Efecto cuando haces clic */
+#startGame:active {
+    transform: scale(0.95);
+    box-shadow: 0 0 20px white;
+}
+
+/* 🎖️ Estilos base de la Card del Ranking */
+#scoreCard {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    width: 270px;
+    height: 240px;
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.3); /* Iluminación inicial */
+    transition: box-shadow 0.3s ease-in-out; /* Suavidad en la animación */
+}
+
+/* ✨ Iluminación en el contorno de la card */
+@keyframes glowEffect {
+    20% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+    50% { box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); }
+    100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+}
+
+/* Activamos la animación para un brillo suave */
+#scoreCard:hover {
+    animation: glowEffect 1.5s infinite alternate;
+}
+
+/* 🎖️ Personalización del Scroll */
+#scoreCard::-webkit-scrollbar {
+    width: 18px;
+}
+
+#scoreCard::-webkit-scrollbar-track {
+    background: #ddd;
+    border-radius: 30px;
+}
+
+#scoreCard::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 40px;
+}
+
+#scoreCard::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
