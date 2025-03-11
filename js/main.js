@@ -9,6 +9,14 @@ canvas.height = 500; // Establece el alto del canvas
 const backgroundImage = new Image();
 backgroundImage.src = './img/3.jpg'; // Asegúrate de que la ruta es correcta
 
+//imagen eart
+const planetImage = new Image();
+planetImage.src = "./img/a4.png"; // Asegúrate de colocar la ruta correcta de la imagen
+
+//imagen saturno
+const specialPlanetImage = new Image();
+specialPlanetImage.src = "./img/a5.png"; // Asegúrate de colocar la ruta correcta
+
 backgroundImage.onload = function () {
     console.log("Imagen de fondo cargada correctamente");
 };
@@ -18,6 +26,8 @@ backgroundImage.onerror = function () {
 
 
 // Lista de asteroides
+let specialPlanets = [];
+let planets = [];
 let asteroids = []; // Array para almacenar los asteroides
 let explosions = []; // Array para almacenar las explosiones
 let asteroidCount = 0; // Contador de asteroides que han salido de la pantalla
@@ -65,56 +75,92 @@ function updateExplosions() {
 //------------------------------------
 
 function update() {
-    // Mover asteroides hacia arriba
-    asteroids.forEach(asteroid => {
-        asteroid.y -= asteroid.speed; // Reduce la posición Y para hacer que suban
-    });
+    // Mover asteroides, planetas y planetas especiales hacia arriba
+    asteroids.forEach(asteroid => asteroid.y -= asteroid.speed);
+    planets.forEach(planet => planet.y -= planet.speed);
+    specialPlanets.forEach(specialPlanet => specialPlanet.y -= specialPlanet.speed);
 
-    // Solo genera un nuevo asteroide si la cantidad en pantalla es menor al límite y no hemos llegado al total de 100
+    // Generar nuevos asteroides si no hemos alcanzado el límite
     if (asteroids.length < maxAsteroidsInScreen && generatedAsteroids < maxGeneratedAsteroids) {
-        if (Math.random() < 0.02) { // Ajustar la frecuencia con la que aparecen
-            let size = 100 + Math.random() * 60; // Genera un tamaño aleatorio entre 10 y 30 píxeles
-
+        if (Math.random() < 0.02) {
+            let size = 80 + Math.random() * 80;
             asteroids.push({
-                x: Math.random() * (canvas.width - size), // Posición aleatoria dentro del canvas
-                y: canvas.height, // Aparece en la parte inferior del canvas
-                width: size,  // Tamaño aleatorio del asteroide
-                height: size, // Tamaño aleatorio del asteroide
-                speed: 2 + Math.random() * 3 // Velocidad entre 2 y 5
+                x: Math.random() * (canvas.width - size),
+                y: canvas.height,
+                width: size,
+                height: size,
+                speed: 2 + Math.random() * 3
             });
+            generatedAsteroids++;
 
-            generatedAsteroids++; // Incrementar el contador de asteroides generados
+            // Generar planetas después del asteroide 50, cada 5 asteroides
+            if (generatedAsteroids > 50 && generatedAsteroids % 5 === 0) {
+                let planetSize = 100 + Math.random() * 50;
+                planets.push({
+                    x: Math.random() * (canvas.width - planetSize),
+                    y: canvas.height,
+                    width: planetSize,
+                    height: planetSize,
+                    speed: 1.5 + Math.random() * 2
+                });
+            }
+
+            // Generar planetas especiales después del asteroide 50, cada 10 asteroides
+            if (generatedAsteroids > 50 && generatedAsteroids % 10 === 0) {
+                let specialPlanetSize = 120 + Math.random() * 50;
+                specialPlanets.push({
+                    x: Math.random() * (canvas.width - specialPlanetSize),
+                    y: canvas.height,
+                    width: specialPlanetSize,
+                    height: specialPlanetSize,
+                    speed: 1.5 + Math.random() * 2
+                });
+            }
         }
     }
 
-    // Eliminar asteroides que salen del canvas y contar cuántos han salido
+    // Eliminar asteroides que salen de la pantalla
     asteroids = asteroids.filter(asteroid => {
-        if (asteroid.y + asteroid.height > 0) {
-            return true; // Mantiene los asteroides dentro del canvas
-        } else {
-            asteroidCount++; // Incrementa el contador si el asteroide sale del canvas
-            return false; // Elimina el asteroide del array
-        }
+        if (asteroid.y + asteroid.height > 0) return true;
+        asteroidCount++;
+        return false;
     });
+
+    // Eliminar planetas que salen de la pantalla
+    planets = planets.filter(planet => planet.y + planet.height > 0);
+    specialPlanets = specialPlanets.filter(specialPlanet => specialPlanet.y + specialPlanet.height > 0);
 }
+
 
 //-------------Dibujo---------------------------------------
 function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpia el canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // 🔹 Dibujar la imagen de fondo siempre
-    if (backgroundImage.complete) {
-        ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
-    }
+    // Dibujar fondo
+    if (backgroundImage.complete) ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
 
-    // 🔹 Dibujar los asteroides si el juego ha comenzado
+    // Dibujar asteroides
     if (asteroidImage.complete) {
         asteroids.forEach(asteroid => {
             ctx.drawImage(asteroidImage, asteroid.x, asteroid.y, asteroid.width, asteroid.height);
         });
     }
 
-    // 🔹 Dibujar explosiones
+    // Dibujar planetas normales
+    if (planetImage.complete) {
+        planets.forEach(planet => {
+            ctx.drawImage(planetImage, planet.x, planet.y, planet.width, planet.height);
+        });
+    }
+
+    // Dibujar planetas especiales
+    if (specialPlanetImage.complete) {
+        specialPlanets.forEach(specialPlanet => {
+            ctx.drawImage(specialPlanetImage, specialPlanet.x, specialPlanet.y, specialPlanet.width, specialPlanet.height);
+        });
+    }
+
+    // Dibujar explosiones
     explosions.forEach(explosion => {
         const gradient = ctx.createRadialGradient(
             explosion.x, explosion.y, explosion.radius * 0.3,
@@ -128,15 +174,14 @@ function draw() {
         ctx.fill();
     });
 
-    // 🔹 Dibujar estadísticas
+    // Dibujar estadísticas
     ctx.fillStyle = "white";
-    ctx.font = "20px Arial"; 
+    ctx.font = "20px Arial";
     let removalPercentage = ((removedAsteroids / maxGeneratedAsteroids) * 100).toFixed(2);
     ctx.fillText("% " + removalPercentage + "%", 10, 70);
     ctx.fillText("Eliminados: " + removedAsteroids, 10, 45);
     ctx.fillText("Perdidos: " + asteroidCount, 10, 20);
 }
-
 
 //-----------------------------------------------------------------------
 function gameLoop() {
@@ -167,35 +212,63 @@ function gameLoop() {
 // ELIMINACION DESPUES DE CLICK
 //------------------------------------------------------------
 function handleClick(event) {
-  // Obtener coordenadas del clic dentro del canvas
-  const rect = canvas.getBoundingClientRect();
-  const clickX = event.clientX - rect.left;
-  const clickY = event.clientY - rect.top;
+    const rect = canvas.getBoundingClientRect();
+    const clickX = event.clientX - rect.left;
+    const clickY = event.clientY - rect.top;
 
-  // Filtrar la lista de asteroides eliminando el que fue clickeado
-  asteroids = asteroids.filter(asteroid => {
-      const isClicked =
-          clickX >= asteroid.x &&
-          clickX <= asteroid.x + asteroid.width &&
-          clickY >= asteroid.y &&
-          clickY <= asteroid.y + asteroid.height;
+    // Verificar si se hizo clic en un asteroide
+    asteroids = asteroids.filter(asteroid => {
+        const isClicked =
+            clickX >= asteroid.x &&
+            clickX <= asteroid.x + asteroid.width &&
+            clickY >= asteroid.y &&
+            clickY <= asteroid.y + asteroid.height;
 
-          if (isClicked) {
-            removedAsteroids++; // Incrementa el contador de eliminados
-        
-            // Agregar una explosión en la posición del asteroide eliminado
+        if (isClicked) {
+            removedAsteroids++;
             explosions.push({
-                x: asteroid.x + asteroid.width / 2, // Centro del asteroide
-                y: asteroid.y + asteroid.height / 2, // Centro del asteroide
-                radius: 5, // Tamaño inicial de la explosión
-                maxRadius: 40 + Math.random() * 10, // Tamaño máximo aleatorio
-                alpha: 1 // Opacidad inicial
+                x: asteroid.x + asteroid.width / 2,
+                y: asteroid.y + asteroid.height / 2,
+                radius: 5,
+                maxRadius: 40 + Math.random() * 10,
+                alpha: 1
             });
         }
+        return !isClicked;
+    });
 
-      return !isClicked; // Mantiene los asteroides que NO fueron clickeados
-  });
+    // Verificar si se hizo clic en un planeta normal (termina el juego con recarga)
+    planets.forEach(planet => {
+        const isClicked =
+            clickX >= planet.x &&
+            clickX <= planet.x + planet.width &&
+            clickY >= planet.y &&
+            clickY <= planet.y + planet.height;
+    
+        if (isClicked) {
+            let nombre = document.getElementById("playerName").value.trim();
+            if (nombre !== "") {
+                guardarJugador(nombre, removedAsteroids); // 🔹 Guardar puntuación en Firebase
+            }
+            mostrarMensajeFinal(nombre, removedAsteroids);
+        }
+    });
+    
+
+    // Verificar si se hizo clic en un planeta especial (muestra puntuación)
+    specialPlanets.forEach(specialPlanet => {
+        const isClicked =
+            clickX >= specialPlanet.x &&
+            clickX <= specialPlanet.x + specialPlanet.width &&
+            clickY >= specialPlanet.y &&
+            clickY <= specialPlanet.y + specialPlanet.height;
+
+        if (isClicked) {
+            mostrarMensajeFinal("Jugador", removedAsteroids);
+        }
+    });
 }
+
 //---------------------------------------------
 
 //------------------Iniciar el juego al dar iniciar------------
@@ -282,7 +355,7 @@ function createStars() {
         star.style.height = `${size}px`;
 
         // Velocidad de parpadeo diferente para cada estrella
-        let duration = Math.random() * 3 + 1;
+        let duration = Math.random() * 12 + 1;
         star.style.animationDuration = `${duration}s`;
 
         starsContainer.appendChild(star);
@@ -293,7 +366,94 @@ function createStars() {
 document.addEventListener("DOMContentLoaded", createStars);
 
 
+//---------- Ventana de Reglas-----------------------
+document.addEventListener("DOMContentLoaded", () => {
+    const rulesIcon = document.getElementById("rulesIcon");
+    const rulesContainer = document.getElementById("rulesContainer");
+
+    if (!rulesIcon) {
+        console.error("❌ Error: El icono de reglas no se encontró en el DOM.");
+        return;
+    }
+    if (!rulesContainer) {
+        console.error("❌ Error: El contenedor de reglas no se encontró en el DOM.");
+        return;
+    }
+
+    rulesIcon.addEventListener("click", (event) => {
+        event.stopPropagation(); // 🚨 Evita que el clic se propague y cierre el contenedor inmediatamente
+        console.log("📜 Icono de reglas clickeado");
+
+        if (rulesContainer.style.display === "none" || rulesContainer.style.display === "") {
+            rulesContainer.style.display = "block"; // Asegura que sea visible
+            rulesContainer.style.opacity = "1";
+            rulesContainer.style.visibility = "visible";
+            console.log("✅ Mostrando reglas");
+        } else {
+            rulesContainer.style.display = "none";
+            rulesContainer.style.opacity = "0";
+            rulesContainer.style.visibility = "hidden";
+            console.log("❌ Ocultando reglas");
+        }
+    });
+
+    // Asegurar que el clic en rulesContainer no lo oculte inmediatamente
+    rulesContainer.addEventListener("click", (event) => {
+        event.stopPropagation();
+    });
+
+    // Cerrar las reglas si el usuario hace clic fuera del cuadro
+    document.addEventListener("click", (event) => {
+        if (event.target !== rulesIcon && !rulesContainer.contains(event.target)) {
+            console.log("🔒 Ocultando reglas");
+            rulesContainer.style.display = "none";
+            rulesContainer.style.opacity = "0";
+            rulesContainer.style.visibility = "hidden";
+        }
+    });
+
+    // Asegurar que las reglas están ocultas al inicio
+    rulesContainer.style.display = "none";
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    let menu = document.getElementById("menu");
+
+    if (menu) {
+        // 🔹 Forzamos el width y height con el método más fuerte posible
+        menu.style.setProperty("width", "120px", "important");
+        menu.style.setProperty("max-width", "120px", "important");
+        menu.style.setProperty("height", "80px", "important");
+        menu.style.setProperty("max-height", "80px", "important");
+
+        // 🔹 Ajustar los elementos internos
+        let playerName = document.getElementById("playerName");
+        let startGame = document.getElementById("startGame");
+
+        if (playerName) {
+            playerName.style.setProperty("width", "90%", "important");
+            playerName.style.setProperty("font-size", "8px", "important");
+            playerName.style.setProperty("height", "14px", "important");
+        }
+
+        if (startGame) {
+            startGame.style.setProperty("width", "90%", "important");
+            startGame.style.setProperty("font-size", "8px", "important");
+            startGame.style.setProperty("height", "16px", "important");
+            startGame.style.setProperty("padding", "3px", "important");
+        }
+
+        console.log("✅ Forzando tamaño de #menu a 120px x 80px");
+    } else {
+        console.error("❌ No se encontró el elemento #menu");
+    }
+});
 
 
 
-//---------------------------------
+
+
+
+
+
+

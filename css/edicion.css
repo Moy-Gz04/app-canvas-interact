@@ -590,3 +590,228 @@ body {
 #scoreCard::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+
+/* reglas---------------------- */
+#rulesContainer {
+    position: absolute;
+    top: 80px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    width: 250px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    display: none; /* Lo oculta por defecto */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+.hidden {
+    display: none !important;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.visible {
+    display: block !important;
+    opacity: 1;
+    visibility: visible;
+}
+
+/* 🔹 Estilos para pantallas de hasta 440px de ancho */
+@media (max-width: 440px) {
+
+    /* 🌌 Estilos generales */
+    body {
+        background: radial-gradient(circle, #222, #000);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        height: auto;
+        margin: 0;
+        font-family: Arial, sans-serif;
+        color: white;
+        overflow-x: hidden;
+        padding: 10px 0;
+        width: 100%;
+        max-width: 440px;
+    }
+
+    /* 📌 Contenedor principal */
+    #gameWrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 440px;
+    }
+
+    /* 📌 Título del juego */
+    #gameTitle {
+        font-size: 22px;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    #rulesIcon {
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    /* 📌 Ajuste del canvas */
+    #gameCanvas {
+        width: 90%;
+        max-width: 400px;
+        height: auto;
+        border: 3px solid white;
+        background: radial-gradient(circle, #222, #000);
+        box-shadow: 0px 0px 8px rgba(255, 255, 255, 0.5);
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+    /* 📌 Contenedor del "Nombre de Jugador" y el Ranking */
+    #bottomContainer {
+        display: flex;
+        flex-direction: row; /* 🔹 Ahora están en una fila */
+        justify-content: space-between;
+        align-items: center;
+        width: 90%;
+        max-width: 400px;
+        margin-top: 5px;
+        gap: 10px;
+    }
+
+    #menu-container {
+        display: flex; /* 🔹 Asegura que los elementos se pongan en fila */
+        flex-direction: row; /* 🔹 Cambia de columna a fila */
+        justify-content: space-between; /* 🔹 Separa los elementos */
+        align-items: center;
+        width: 90%;
+        max-width: 400px;
+        margin-top: 5px;
+        gap: 10px;
+    }
+
+    /* 📌 Ajuste del "Nombre de Jugador" (40% del espacio) */
+    #menu {
+        text-align: center;
+        background: #121212;
+        padding: 3px;
+        border-radius: 10px;
+        width: 100px !important;
+        max-width: 100px;
+        height: 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content:space-evenly;
+    }
+
+    #player {
+        font-size: 10px;
+        margin-bottom: 0px;
+        text-align: center;
+    }
+
+    #playerName {
+        width: 120px;
+        padding: 2px;
+        font-size: 10px;
+        text-align: center;
+        border-radius: 5px;
+    }
+
+    /* 📌 Botón de iniciar */
+    #startGame {
+        width: 90px;
+        font-size: 10px;
+        padding: 6px;
+        background: linear-gradient(135deg, #00ff00, #008000);
+        color: white;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: all 0.3s ease-in-out;
+        margin-top: -30px;
+        
+    }
+
+    #startGame:hover {
+        background: linear-gradient(135deg, #008000, #005500);
+    }
+
+    /* 📌 Ajuste del ranking (60% del espacio) */
+    #scoreCard {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 6px;
+        border-radius: 10px;
+        text-align: center;
+        width: 320px;
+        height: 120px;
+    }
+
+    #scoreListContainer {
+        max-height: 80px;
+        overflow-y: auto;
+    }
+
+    #scoreList li {
+        background: #1b1a1a;
+        padding: 5px;
+        margin: 2px 0;
+        border-radius: 5px;
+        font-size: 10px;
+    }
+
+    /* 📌 Forzar que el canvas y elementos estén en columna */
+    #gameContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 440px;
+    }
+
+    #grameWrapper{
+        justify-content: center;
+    }
+
+    #menu {
+        width: 190px !important;
+        min-width: 190px !important;
+        max-width: 190px !important;
+        height: 120px !important;
+        min-height:120px !important;
+        max-height: 120px !important;
+    }
+
+    #playerName {
+        width: 100px !important;
+        font-size: 10px;
+    }
+    
+    #startGame {
+        width: 100px !important;
+        font-size: 10px;
+        padding: 4px;
+    }
+    
+    #menu-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        width: auto;
+    }
+    
+    
+
+
+}

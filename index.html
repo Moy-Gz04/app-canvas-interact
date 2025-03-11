@@ -6,6 +6,8 @@
     <title>Asteroid Games</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <link rel="stylesheet" href="css/edicion.css"> <!-- Se enlaza el CSS separado -->
 </head>
 
@@ -14,7 +16,10 @@
 
   <!-- Contenedor principal -->
 <div id="gameWrapper">
-    <h1 id="gameTitle">Asteroid 🪨 Game </h1>
+    <h1 id="gameTitle">
+        Asteroid 🪨 Game 
+        <i id="rulesIcon" class="fas fa-info-circle"></i>
+    </h1>
 
     <!-- Contenedor del juego (canvas + menú de inicio y ranking) -->
     <div id="gameContainer">
@@ -35,9 +40,20 @@
                     <ul id="scoreList"></ul>
                 </div>
             </div>
-            
         </div>
     </div>
+</div>
+
+<!-- Contenedor oculto con las reglas del juego -->
+<div id="rulesContainer" class="hidden">
+    <h3>📜 Reglas del Juego</h3>
+    <ul>
+        <li>💥 Haz clic en los asteroides para destruirlos.</li>
+        <li>🚀 Cada 50 asteroides aparecerán planetas.</li>
+        <li>⚠️ Si tocas un planeta normal, el juego termina.</li>
+        <li>🌍 Si tocas un planeta especial, verás tu puntuación final.</li>
+        <li>🔥 ¡Evita perder demasiados asteroides!</li>
+    </ul>
 </div>
 
 <!-- Modal de Felicitaciones -->
@@ -47,7 +63,6 @@
         <button id="restartButton">OK</button>
     </div>
 </div>
-
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
@@ -85,12 +100,11 @@
         get(rankingRef).then((snapshot) => {
             if (snapshot.exists()) {
                 let ranking = snapshot.val();
-                let lista = Object.values(ranking).sort((a, b) => b.puntuacion - a.puntuacion); // Ordenar de mayor a menor
+                let lista = Object.values(ranking).sort((a, b) => b.puntuacion - a.puntuacion);
     
                 let tablaRanking = document.getElementById("scoreList");
-                tablaRanking.innerHTML = ""; // Limpiar la tabla antes de actualizar
+                tablaRanking.innerHTML = "";
     
-                // 🔹 Mostrar todos los jugadores, pero con scroll activado si hay más de 4
                 lista.forEach((jugador) => {
                     let li = document.createElement("li");
                     li.textContent = `${jugador.nombre} - ${jugador.puntuacion} pts`;
@@ -106,8 +120,6 @@
         });
     }
     
-    
-    // ✅ Hacer accesible la función en la consola
     window.guardarJugador = guardarJugador;
     window.obtenerRanking = obtenerRanking;
 </script>
@@ -115,6 +127,19 @@
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         obtenerRanking();
+
+        const rulesIcon = document.getElementById("rulesIcon");
+        const rulesContainer = document.getElementById("rulesContainer");
+
+        rulesIcon.addEventListener("click", () => {
+            rulesContainer.classList.toggle("hidden");
+        });
+
+        document.addEventListener("click", (event) => {
+            if (!rulesContainer.contains(event.target) && event.target !== rulesIcon) {
+                rulesContainer.classList.add("hidden");
+            }
+        });
     });
 </script>
 
