@@ -779,10 +779,6 @@ body {
         max-width: 440px;
     }
 
-    #grameWrapper{
-        justify-content: center;
-    }
-
     #menu {
         width: 190px !important;
         min-width: 190px !important;
@@ -810,6 +806,18 @@ body {
         gap: 5px;
         width: auto;
     }
+    #gameWrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Centra horizontalmente */
+        justify-content: center; /* Centra verticalmente */
+        width: 100%;
+        max-width: 440px; /* 🔹 Limita el ancho */
+        height: 100vh; /* 🔹 Ocupa toda la altura de la pantalla */
+        margin: 0 auto; /* 🔹 Centra horizontalmente */
+        position: relative; /* 🔹 Asegura que los elementos internos respeten el centrado */
+    }
+    
     
     
 

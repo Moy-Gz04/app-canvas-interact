@@ -3,6 +3,11 @@ const canvas = document.getElementById("gameCanvas"); // Obtiene el elemento can
 const ctx = canvas.getContext("2d"); // Obtiene el contexto 2D para dibujar
 // Detecta el clic en el canvas y elimina el asteroide si fue clickeado
 canvas.addEventListener("click", handleClick);
+canvas.addEventListener("touchstart", function(event) {
+    event.preventDefault(); // Previene el zoom accidental en móvil
+    handleClick(event.touches[0]); // Llama a la función con la primera posición táctil
+});
+
 canvas.width = 500; // Establece el ancho del canvas
 canvas.height = 500; // Establece el alto del canvas
 
@@ -255,18 +260,23 @@ function handleClick(event) {
     });
     
 
-    // Verificar si se hizo clic en un planeta especial (muestra puntuación)
-    specialPlanets.forEach(specialPlanet => {
-        const isClicked =
-            clickX >= specialPlanet.x &&
-            clickX <= specialPlanet.x + specialPlanet.width &&
-            clickY >= specialPlanet.y &&
-            clickY <= specialPlanet.y + specialPlanet.height;
+   // Verificar si se hizo clic en un planeta especial (muestra puntuación final)
+specialPlanets.forEach(specialPlanet => {
+    const isClicked =
+        clickX >= specialPlanet.x &&
+        clickX <= specialPlanet.x + specialPlanet.width &&
+        clickY >= specialPlanet.y &&
+        clickY <= specialPlanet.y + specialPlanet.height;
 
-        if (isClicked) {
-            mostrarMensajeFinal("Jugador", removedAsteroids);
+    if (isClicked) {
+        let nombre = document.getElementById("playerName").value.trim();
+        if (nombre !== "") {
+            guardarJugador(nombre, removedAsteroids); // Guarda la puntuación en Firebase
         }
-    });
+        mostrarMensajeFinal(nombre, removedAsteroids); // Muestra correctamente la puntuación
+    }
+});
+
 }
 
 //---------------------------------------------
@@ -416,38 +426,15 @@ document.addEventListener("DOMContentLoaded", () => {
     rulesContainer.style.display = "none";
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-    let menu = document.getElementById("menu");
-
-    if (menu) {
-        // 🔹 Forzamos el width y height con el método más fuerte posible
-        menu.style.setProperty("width", "120px", "important");
-        menu.style.setProperty("max-width", "120px", "important");
-        menu.style.setProperty("height", "80px", "important");
-        menu.style.setProperty("max-height", "80px", "important");
-
-        // 🔹 Ajustar los elementos internos
-        let playerName = document.getElementById("playerName");
-        let startGame = document.getElementById("startGame");
-
-        if (playerName) {
-            playerName.style.setProperty("width", "90%", "important");
-            playerName.style.setProperty("font-size", "8px", "important");
-            playerName.style.setProperty("height", "14px", "important");
-        }
-
-        if (startGame) {
-            startGame.style.setProperty("width", "90%", "important");
-            startGame.style.setProperty("font-size", "8px", "important");
-            startGame.style.setProperty("height", "16px", "important");
-            startGame.style.setProperty("padding", "3px", "important");
-        }
-
-        console.log("✅ Forzando tamaño de #menu a 120px x 80px");
-    } else {
-        console.error("❌ No se encontró el elemento #menu");
-    }
+document.getElementById("playerName").addEventListener("blur", function() {
+    setTimeout(() => {
+        document.body.style.transform = "scale(1)";
+        document.documentElement.style.transform = "scale(1)";
+        document.body.style.zoom = "1";
+        document.documentElement.style.zoom = "1";
+    }, 300); // Retraso para evitar que el zoom se mantenga
 });
+
 
 
 
