@@ -3,6 +3,7 @@ const canvas = document.getElementById("gameCanvas"); // Obtiene el elemento can
 const ctx = canvas.getContext("2d"); // Obtiene el contexto 2D para dibujar
 // Detecta el clic en el canvas y elimina el asteroide si fue clickeado
 canvas.addEventListener("click", handleClick);
+canvas.addEventListener("touchstart", handleClick);
 canvas.addEventListener("touchstart", function(event) {
     event.preventDefault(); // Previene el zoom accidental en móvil
     handleClick(event.touches[0]); // Llama a la función con la primera posición táctil
@@ -144,6 +145,13 @@ function draw() {
     // Dibujar fondo
     if (backgroundImage.complete) ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
 
+    // 🔹 Asegurar que el fondo siempre se dibuje
+    if (backgroundImage.complete && backgroundImage.naturalWidth > 0) {
+        ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+    } else {
+        console.warn("⚠️ Imagen de fondo aún no está lista.");
+    }
+
     // Dibujar asteroides
     if (asteroidImage.complete) {
         asteroids.forEach(asteroid => {
@@ -217,17 +225,29 @@ function gameLoop() {
 // ELIMINACION DESPUES DE CLICK
 //------------------------------------------------------------
 function handleClick(event) {
-    const rect = canvas.getBoundingClientRect();
-    const clickX = event.clientX - rect.left;
-    const clickY = event.clientY - rect.top;
+    event.preventDefault(); // Evita comportamientos no deseados en móviles
+
+    let clickX, clickY;
+
+    // Detectar si es un evento táctil o de ratón
+    if (event.touches) {
+        clickX = event.touches[0].clientX - canvas.getBoundingClientRect().left;
+        clickY = event.touches[0].clientY - canvas.getBoundingClientRect().top;
+    } else {
+        clickX = event.clientX - canvas.getBoundingClientRect().left;
+        clickY = event.clientY - canvas.getBoundingClientRect().top;
+    }
+
+    // 🔹 Mejorar precisión agregando un margen de error en móviles
+    const tolerance = 10;
 
     // Verificar si se hizo clic en un asteroide
     asteroids = asteroids.filter(asteroid => {
         const isClicked =
-            clickX >= asteroid.x &&
-            clickX <= asteroid.x + asteroid.width &&
-            clickY >= asteroid.y &&
-            clickY <= asteroid.y + asteroid.height;
+            clickX >= asteroid.x - tolerance &&
+            clickX <= asteroid.x + asteroid.width + tolerance &&
+            clickY >= asteroid.y - tolerance &&
+            clickY <= asteroid.y + asteroid.height + tolerance;
 
         if (isClicked) {
             removedAsteroids++;
@@ -242,42 +262,44 @@ function handleClick(event) {
         return !isClicked;
     });
 
-    // Verificar si se hizo clic en un planeta normal (termina el juego con recarga)
+    // 🔹 Verificar si se hizo clic en un planeta normal
     planets.forEach(planet => {
         const isClicked =
-            clickX >= planet.x &&
-            clickX <= planet.x + planet.width &&
-            clickY >= planet.y &&
-            clickY <= planet.y + planet.height;
-    
+            clickX >= planet.x - tolerance &&
+            clickX <= planet.x + planet.width + tolerance &&
+            clickY >= planet.y - tolerance &&
+            clickY <= planet.y + planet.height + tolerance;
+
         if (isClicked) {
             let nombre = document.getElementById("playerName").value.trim();
             if (nombre !== "") {
-                guardarJugador(nombre, removedAsteroids); // 🔹 Guardar puntuación en Firebase
+                guardarJugador(nombre, removedAsteroids);
             }
             mostrarMensajeFinal(nombre, removedAsteroids);
         }
     });
-    
 
-   // Verificar si se hizo clic en un planeta especial (muestra puntuación final)
-specialPlanets.forEach(specialPlanet => {
-    const isClicked =
-        clickX >= specialPlanet.x &&
-        clickX <= specialPlanet.x + specialPlanet.width &&
-        clickY >= specialPlanet.y &&
-        clickY <= specialPlanet.y + specialPlanet.height;
+    // 🔹 Verificar si se hizo clic en un planeta especial
+    specialPlanets.forEach(specialPlanet => {
+        const isClicked =
+            clickX >= specialPlanet.x - tolerance &&
+            clickX <= specialPlanet.x + specialPlanet.width + tolerance &&
+            clickY >= specialPlanet.y - tolerance &&
+            clickY <= specialPlanet.y + specialPlanet.height + tolerance;
 
-    if (isClicked) {
-        let nombre = document.getElementById("playerName").value.trim();
-        if (nombre !== "") {
-            guardarJugador(nombre, removedAsteroids); // Guarda la puntuación en Firebase
+        if (isClicked) {
+            let nombre = document.getElementById("playerName").value.trim();
+            if (nombre !== "") {
+                guardarJugador(nombre, removedAsteroids);
+            }
+            mostrarMensajeFinal(nombre, removedAsteroids);
         }
-        mostrarMensajeFinal(nombre, removedAsteroids); // Muestra correctamente la puntuación
-    }
-});
-
+    });
 }
+
+// 🔹 Agregar evento para detectar toques en móviles
+canvas.addEventListener("touchstart", handleClick);
+
 
 //---------------------------------------------
 
@@ -307,6 +329,11 @@ function startGame() {
     console.warn("⏳ Esperando a que la imagen de fondo cargue antes de iniciar el juego.");
     return;
 }
+
+ // 🔹 Restablecer el zoom al 100% en móviles
+ document.body.style.zoom = "1";
+ document.documentElement.style.zoom = "1";
+ document.activeElement.blur(); // 🔹 Forzar que se pierda el foco del input
 
 console.log("🚀 Iniciando juego...");
 gameLoop();

@@ -817,6 +817,12 @@ body {
         margin: 0 auto; /* 🔹 Centra horizontalmente */
         position: relative; /* 🔹 Asegura que los elementos internos respeten el centrado */
     }
+
+    #playerName {
+        font-size: 16px !important; /* 🔹 Tamaño mínimo para evitar zoom en iOS */
+        -webkit-text-size-adjust: 100%; /* 🔹 Evita que Safari ajuste el tamaño del texto */
+    }
+    
     
     
     
